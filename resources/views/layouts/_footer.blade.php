@@ -1,7 +1,7 @@
 <footer class="footer">
   <div class="container">
     <p class="float-start">
-      由<a target="_blank" href="http://weibo.com/u/1837553744?is_hot=1">zhaagnl</a>
+      由<a target="_blank" href="https://github.com/zhaagnl/larabbs">zhaagnl</a>
       设计和编码 <span style="color: #e27575;font-size: 14px;">❤</span>
     </p>
 
