@@ -54,7 +54,7 @@ class RegisterController extends Controller
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
             'captcha' => ['required', 'captcha'],
-        ],[
+        ],[ //自定义错误提示，这里我们对验证码的错误提示进行自定义。
             'captcha.required' => '验证码不能为空',
             'captcha.captcha' => '请输入正确的验证码',
         ]);
