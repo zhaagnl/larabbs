@@ -49,6 +49,15 @@ services:
     networks:
       - laravel
 
+  mailhog:
+    image: mailhog/mailhog
+    container_name: larabbs_mailhog
+    ports:
+      - "8025:8025"   # Web 管理界面
+      - "1025:1025"   # SMTP 端口（应用发邮件用）
+    networks:
+      - laravel
+
 networks:
   laravel:
     driver: bridge
