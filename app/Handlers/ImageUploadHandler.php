@@ -46,6 +46,7 @@ class ImageUploadHandler
             'path' => config('app.url') . "/$folder_name/$filename"
         ];
     }
+
     // 图片剪裁
     public function reduceSize($file_path,$max_width)
     {
