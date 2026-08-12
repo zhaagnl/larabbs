@@ -3,14 +3,15 @@
 namespace App\Handlers;
 
 use Illuminate\Support\Str;
-
+use Intervention\Image\ImageManager;
+use Intervention\Image\Drivers\Gd\Driver;
 
 class ImageUploadHandler
 {
     // 只允许以下后缀名的图片文件上传
     protected $allowed_ext = ["png", "jpg", "gif", "jpeg"];
 
-    public function save($file, $folder, $file_prefix)
+    public function save($file, $folder, $file_prefix, $max_width = false)
     {
         // 构建存储的文件夹规则，值如：uploads/images/avatars/201709/21/
         // 文件夹切割能让查找效率更高
@@ -35,8 +36,29 @@ class ImageUploadHandler
         // 将图片移动到我们目标存储路径中
         $file->move($upload_path, $filename);
 
+        // 如果限制了图片宽度，就进行剪裁
+        if($max_width && $extension != 'gif'){
+            // 此类中封装的函数，用于剪裁
+            $this->reduceSize($upload_path . '/' . $filename,$max_width);
+        }
+
         return [
             'path' => config('app.url') . "/$folder_name/$filename"
         ];
+    }
+    // 图片剪裁
+    public function reduceSize($file_path,$max_width)
+    {
+        // 4.x版本：先创建ImageManager 实例
+        $manager = new ImageManager(new Driver());
+
+        // 读取图片文件
+        $image = $manager->decodePath($file_path);
+
+        // 进行大小调整操作
+        $image->scaleDown(width: $max_width);
+
+        // 对图片修改后进行保存
+        $image->save();
     }
 }
