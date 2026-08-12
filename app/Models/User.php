@@ -15,13 +15,15 @@ class User extends Authenticatable implements MustVerifyEmail
 
     /**
      * The attributes that are mass assignable.
-     *
+     *$fillable防止用户在表单中提交不允许修改的字段，造成安全漏洞，只有添加的字段可以修改
      * @var array<int, string>
      */
     protected $fillable = [
         'name',
         'email',
         'password',
+        'introduction',
+        'avatar',
     ];
 
     /**
