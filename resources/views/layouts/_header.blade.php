@@ -25,16 +25,15 @@
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
              aria-haspopup="true" aria-expanded="false">
              <!-- 把 adventurer 换成 bottts、avataaars、croodles 等即可切换风格 -->
-              <img src="https://api.dicebear.com/7.x/avataaars/svg?seed={{ $user->name }}" class="img-responsive img-circle" width="30px" height="30px" >
+              <img src="https://api.dicebear.com/7.x/avataaars/svg?seed={{ Auth::user()->name }}" class="img-responsive img-circle" width="30px" height="30px" >
               {{ Auth::user()->name }}
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <a class="dropdown-item" href="">个人中心</a>
-              <a class="dropdown-item" href="">编辑资料</a>
+              <a class="dropdown-item" href="{{ route('users.show',Auth::id()) }}">个人中心</a>
+              <a class="dropdown-item" href="{{ route('users.edit',Auth::id()) }}">编辑资料</a>
               <div class="dropdown-divider" ></div>
               <a class="dropdown-item" id="logout" href="#">
                 <form action="{{ route('logout') }}" method="post">
-                  {{-- {{ csrf_field() }} --}}
                   @csrf
                   <button class="btn btn-block btn-danger" type="submit" name="button">退出</button>
                 </form>
