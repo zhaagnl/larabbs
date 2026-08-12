@@ -25,7 +25,13 @@
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
              aria-haspopup="true" aria-expanded="false">
              <!-- 把 adventurer 换成 bottts、avataaars、croodles 等即可切换风格 -->
-              <img src="https://api.dicebear.com/7.x/avataaars/svg?seed={{ Auth::user()->name }}" class="img-responsive img-circle" width="30px" height="30px" >
+              <img
+                @if(!(Auth::user()->avatar))
+                  src="https://api.dicebear.com/7.x/avataaars/svg?seed={{ Auth::user()->name }}"
+                @else
+                  src="{{ Auth::user()->avatar }}"
+                @endif
+              class="img-responsive img-circle" width="30px" height="30px" >
               {{ Auth::user()->name }}
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
