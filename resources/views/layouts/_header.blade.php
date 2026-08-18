@@ -12,6 +12,11 @@
     <div class="collapse navbar-collapse justify-content-between" id="navbarSupportedContent">
       <!-- Left Side Of Navbar -->
       <ul class="navbar-nav">
+        <li class="nav-item"><a href="{{ route('topics.index') }}" class="nav-link {{ active_class(if_route('topics.index')) }}">话题</a></li>
+        <li class="nav-item"><a href="{{ route('categories.show',1) }}" class="nav-link {{ category_nav_active(1) }}">分享</a></li>
+        <li class="nav-item"><a href="{{ route('categories.show',2) }}" class="nav-link {{ category_nav_active(2) }}">教程</a></li>
+        <li class="nav-item"><a href="{{ route('categories.show',3) }}" class="nav-link {{ category_nav_active(3) }}">问答</a></li>
+        <li class="nav-item"><a href="{{ route('categories.show',4) }}" class="nav-link {{ category_nav_active(4) }}">公告</a></li>
 
       </ul>
       <!-- Right Side Of Navbar -->
