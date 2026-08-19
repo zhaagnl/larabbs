@@ -48,12 +48,19 @@
 
           <div class="mb-3">
             <label for="body-field">内容</label>
-            <textarea name="body" id="editor" class="form-control" rows="6" placeholder="请填入至少三个字符的内容。" required>{{ old('body', $topic->body ) }}</textarea>
+            {{-- wangEditor 工具栏容器 --}}
+            <div id="toolbar-container"></div>
+            {{-- wangEditor 编辑区容器（通过 data-initial-content 传递初始内容） --}}
+            <div id="editor-container" style="height: 400px; border: 1px solid #ccc; border-radius: 4px;"
+              data-initial-content="{{ old('body', $topic->body) }}">
+            </div>
+            {{-- 隐藏的 textarea，用于表单提交 --}}
+            <textarea name="body" id="editor" style="display:none;">{{ old('body', $topic->body) }}</textarea>
           </div>
 
           <div class="well well-sm">
             <button type="submit" class="btn btn-primary"><i class="far fa-save mr-2" aria-hidden="true"></i>保存</button>
-            <a class="btn btn-link float-xs-right" href="{{ route('topics.index') }}"> <- Back</a>
+
           </div>
         </form>
       </div>
