@@ -20,10 +20,10 @@
 
 
         @if($topic->id)
-          <form action="{{ route('topics.update', $topic->id) }}" method="POST" accept-charset="UTF-8">
+          <form action="{{ route('topics.update', $topic->id) }}" method="POST" accept-charset="UTF-8" enctype="multipart/form-data">
           <input type="hidden" name="_method" value="PUT">
         @else
-          <form action="{{ route('topics.store') }}" method="POST" accept-charset="UTF-8">
+          <form action="{{ route('topics.store') }}" method="POST" accept-charset="UTF-8" enctype="multipart/form-data">
         @endif
 
 
@@ -33,12 +33,12 @@
 
           <div class="mb-3">
             <label for="title-field">标题</label>
-            <input class="form-control" type="text" name="title"  value="{{ old('title', $topic->title ) }}" placeholder="请填写标题" required/>
+            <input class="form-control" type="text" name="title" id="title-field" value="{{ old('title', $topic->title ) }}" placeholder="请填写标题" required/>
           </div>
 
           <div class="mb-3">
             <label for="category_id-field">请选择分类</label>
-            <select class="form-control" name="category_id"  required>
+            <select class="form-control" name="category_id" id="category_id-field" required>
               <option value="" hidden disabled selected>请选择分类</option>
               @foreach($categories as $value)
               <option value="{{ $value->id }}">{{ $value->name }}</option>
@@ -47,7 +47,7 @@
           </div>
 
           <div class="mb-3">
-            <label for="body-field">内容</label>
+            <label >内容</label>
             {{-- wangEditor 工具栏容器 --}}
             <div id="toolbar-container"></div>
             {{-- wangEditor 编辑区容器（通过 data-initial-content 传递初始内容） --}}
@@ -68,4 +68,65 @@
   </div>
 </div>
 
+@endsection
+
+@section('scripts')
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const { createEditor, createToolbar } = window.wangEditor;
+
+    // 配置上传图片（注意：MENU_CONF 直接写在 config 里）
+    const editorConfig = {
+        placeholder: '请输入内容...',
+        MENU_CONF: {
+            uploadImage: {
+                server: '{{ route('topics.upload_image') }}',
+                fieldName: 'upload_file',
+                maxFileSize: 1 * 1024 * 1024,
+                allowedFileTypes: ['image/*'],
+                meta: {
+                    _token: '{{ csrf_token() }}'
+                },
+                customInsert(res, insertFn) {
+                    if (res.success && res.file_path) {
+                        insertFn(res.file_path, '', '');
+                    } else {
+                        alert(res.msg || '上传失败');
+                    }
+                }
+            }
+        }
+    };
+
+    // 获取容器
+    const editorContainer = document.getElementById('editor-container');
+    const toolbarContainer = document.getElementById('toolbar-container');
+    const initialHtml = editorContainer.dataset.initialContent || '<p><br></p>';
+
+    // 创建编辑器
+    const editor = createEditor({
+        selector: editorContainer,
+        html: initialHtml,
+        config: editorConfig
+    });
+
+    // 创建工具栏
+    createToolbar({
+        editor,
+        selector: toolbarContainer,
+        config: {},
+        mode: 'default'
+    });
+
+    // 表单提交时同步内容
+    const form = editorContainer.closest('form');
+    const hiddenTextarea = form.querySelector('textarea[name="body"]');
+    form.addEventListener('submit', function () {
+        hiddenTextarea.value = editor.getHtml();
+    });
+
+    // 暴露编辑器实例（可选）
+    window.editor = editor;
+});
+</script>
 @endsection
