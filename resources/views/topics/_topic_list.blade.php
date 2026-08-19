@@ -37,7 +37,7 @@
               </a>
               <span> • </span>
               <i class="far fa-clock"></i>
-              <span class="timeage" title="最后活跃于：{{ $topic->updated_at }}">{{ $topic->updated_at->diffForHumans() }}</span>
+              <span class="timeago" title="最后活跃于：{{ $topic->updated_at }}">{{ $topic->updated_at->diffForHumans() }}</span>
           </small>
         </div>
       </li>
