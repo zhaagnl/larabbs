@@ -68,6 +68,7 @@ Route::get('topic/{topic}/{slug?}', 'TopicsController@show')->name('topics.show'
 
 
 
+Route::resource('replies', 'RepliesController', ['only' => ['store', 'destroy']]);
 
 
 
@@ -77,5 +78,3 @@ Route::get('topic/{topic}/{slug?}', 'TopicsController@show')->name('topics.show'
 
 
 
-
-Route::resource('replies', 'RepliesController', ['only' => ['index', 'show', 'create', 'store', 'update', 'edit', 'destroy']]);
