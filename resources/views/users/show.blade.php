@@ -9,10 +9,10 @@
     <div class="col-lg-3 col-md-3 hidden-sm hidden-xs user-info">
       <div class="card ">
         <img class="card-img-top"
-          @if(!$user->avatar)
-            src="https://api.dicebear.com/7.x/avataaars/svg?seed={{ $user->name }}"
-          @else
+          @if(Storage::disk('public')->exists($user->avatar))
             src="{{ $user->avatar }}"
+          @else
+            src="https://api.dicebear.com/7.x/avataaars/svg?seed={{ $user->name }}"
           @endif
           alt="{{ $user->name }}">
         <div class="card-body">
@@ -32,14 +32,36 @@
       </div>
       <hr>
 
+
       {{-- 用户发布的内容 --}}
       <div class="card ">
         <div class="card-body">
-          暂无数据 ~_~
+          <ul class="nav nav-tabs">
+            <li class="nav-item">
+              <a class="nav-link bg-transparent {{ active_class(if_query('tab', null)) }}"
+                href="{{ route('users.show', $user->id) }}">
+                Ta 的话题
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link bg-transparent {{ active_class(if_query('tab', 'replies')) }}"
+                href="{{ route('users.show', [$user->id, 'tab' => 'replies']) }}">
+                Ta 的回复
+              </a>
+            </li>
+          </ul>
+          @if (if_query('tab', 'replies'))
+          @include('users._replies', [
+          'replies' => $user->replies()->with('topic')->recent()->paginate(5),
+          ])
+          @else
+          @include('users._topics', [
+          'topics' => $user->topics()->recent()->paginate(5),
+          ])
+          @endif
         </div>
       </div>
 
-    </div>
-  </div>
-
-@stop
+      </div>
+      </div>
+      @stop

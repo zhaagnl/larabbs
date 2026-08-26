@@ -36,10 +36,10 @@
              aria-haspopup="true" aria-expanded="false">
              <!-- 把 adventurer 换成 bottts、avataaars、croodles 等即可切换风格 -->
               <img
-                @if(!(Auth::user()->avatar))
-                  src="https://api.dicebear.com/7.x/avataaars/svg?seed={{ Auth::user()->name }}"
-                @else
+                @if(!(Storage::disk('public')->exists(Auth::user()->avatar)))
                   src="{{ Auth::user()->avatar }}"
+                @else
+                  src="https://api.dicebear.com/7.x/avataaars/svg?seed={{ Auth::user()->name }}"
                 @endif
               class="img-responsive img-circle" width="30px" height="30px" >
               {{ Auth::user()->name }}
