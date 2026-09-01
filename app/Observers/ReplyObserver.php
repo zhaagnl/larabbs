@@ -12,9 +12,6 @@ class ReplyObserver
 {
     public function created(Reply $reply)
     {
-        // 1简单做法
-        // $reply->topic->increment('reply_count', 1);
-        // 2常规做法
         $reply->topic->reply_count = $reply->topic->replies->count();
         $reply->topic->save();
 

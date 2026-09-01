@@ -22,12 +22,12 @@ class User extends Authenticatable implements MustVerifyEmail
     public function notify($instance)
     {
         // 如果要通知的人是当前用户，且不是在验证邮箱，就不必通知了！
-        if ($this->id == Auth::id()&&get_class($instance)!="Illuminate\Auth\Notifications\VerifyEmail") {
+        if ($this->id == Auth::id() && get_class($instance) != "Illuminate\Auth\Notifications\VerifyEmail" ) {
            return;
         }
 
         // 只有数据库类型通知才需提醒，直接发送 Email 或者其他的都 Pass
-        if(method_exists($instance, 'toDatabases')){
+        if(method_exists($instance, 'toDatabase')){
             $this->increment('notification_count');
         }
 
@@ -79,6 +79,13 @@ class User extends Authenticatable implements MustVerifyEmail
     public function replies()
     {
         return $this->hasMany(Reply::class);
+    }
+
+    public function markAsRead()
+    {
+        $this->notification_count = 0;
+        $this->save();
+        $this->unreadNotifications->markAsRead();
     }
 
 }
