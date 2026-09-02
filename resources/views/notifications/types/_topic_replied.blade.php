@@ -16,7 +16,7 @@
       </a>
 
       {{-- 回复删除按钮 --}}
-      <span class="meta fa-clock" title="{{ $notification->crated_at }}">
+      <span class="meta fa-end" title="{{ $notifications->created_at }}">
         <i class="far fa-clock"></i>
         {{ $notification->created_at->diffForHumans() }}
       </span>

@@ -66,6 +66,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'email_verified_at' => 'datetime',
     ];
 
+    // 判断当前用户是否是模型的作者
     public function isAuthorOf($model)
     {
         return $this->id == $model->user_id;

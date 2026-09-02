@@ -50,14 +50,23 @@ class Topic extends Model
         return $query->orderBy('created_at', 'desc');
     }
 
+    // 重构连接
     public function link($params = [])
     {
         return route('topics.show', array_merge([$this->id, $this->slug], $params));
     }
 
+    // 关联关系一个话题有多个回复
     public function replies()
     {
         return $this->hasMany(Reply::class);
+    }
+
+    // 重构重复代码
+    public function updateReplyCount()
+    {
+        $this->reply_count = $this->replies->count();
+        $this->save();
     }
 
 }
