@@ -186,6 +186,7 @@ return [
         /*
          * Package Service Providers...
          */
+        // VIACreative\SudoSu\ServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -195,6 +196,9 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+
+
+
 
     ],
 
