@@ -10,7 +10,8 @@
                   src="https://api.dicebear.com/7.x/avataaars/svg?seed={{ $topic->user->name }}"
                 @else
                   src="{{ $topic->user->avatar }}"
-                @endif title="{{ $topic->user->name }}">
+                @endif
+                title="{{ $topic->user->name }}">
           </a>
         </div>
 
