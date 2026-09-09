@@ -83,7 +83,18 @@ return [
             'type' => 'relationship',
             // 关联模型字段，用来做关联显示
             'name_field' => 'name',
+            'autocomplete' => true,
+            'search_fields' => ["CONCAT(id,'',name)"],
+            'options_sort_field' => 'id',
 
+        ],
+        'permissions' => [
+            'title' => '直接权限',
+            'type' => 'relationship',
+            'name_field' => 'name',
+            'autocomplete' => true,
+            'search_fields' => ["CONCAT(id, ' ', name)"],
+            'options_sort_field' => 'id',
         ],
     ],
 
