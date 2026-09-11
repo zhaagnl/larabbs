@@ -21,18 +21,20 @@ trait ActiveUserHelper
     protected $user_number = 6;  //取出来多少用户
 
     // 缓存相关配置
-    protected $cache_key = 'larabbs_active_users';
-    protected $cache_expire_in_seconds = 65 * 60;
+    protected $cache_key = 'larabbs_active_users';//缓存键名
+    protected $cache_expire_in_seconds = 65 * 60;//缓存过期时间(65分钟)
 
+    // 获取缓存数据
     public function getActiveUsers()
     {
-        // 尝试从缓存中取出 cache_key 对应的数据。如果能取到，便直接返回数据。
+        // 尝试从缓存中取出 cache_key 对应的数据。如果能取到，便直接返回数据。（否则执行闭包）
         // 否则运行匿名函数中的代码来取出活跃用户数据，返回的同时做了缓存。
         return Cache::remember($this->cache_key,$this->cache_expire_in_seconds,function(){
             return $this->calculateActiveUsers();
         });
     }
 
+    // 强制重新计算活跃用户，并覆盖缓存。定时任务、手动刷新
     public function calculateAndCacheActiveUsers()
     {
         // 获取活跃用户列表
@@ -42,12 +44,13 @@ trait ActiveUserHelper
 
     }
 
+    // 计算权重排序降序返回集合
     private function calculateActiveUsers()
     {
-        $this->calculateTopicScore();
-        $this->calculateReplyScore();
+        $this->calculateTopicScore(); //计算话题得分
+        $this->calculateReplyScore(); //计算回复得分并累加
 
-        // 数组按照得分排序
+        // 数组按照得分排序（升序）
         $users = Arr::sort($this->users, function($user){
             return $user['score'];
         });
@@ -77,6 +80,7 @@ trait ActiveUserHelper
 
     }
 
+    // 计算话题权重，放入用户分数
     private function calculateTopicScore()
     {
         // 从话题数据表里取出限定时间范围（$pass_days）内，有发表过话题的用户
@@ -92,7 +96,7 @@ trait ActiveUserHelper
         }
     }
 
-
+    // 查询7天内用户回复数量，计算权重，已有用户累加否则设置得分
     private function calculateReplyScore()
     {
         // 从回复数据表里取出限定时间范围（$pass_days）内，有发表过回复的用户
@@ -114,6 +118,7 @@ trait ActiveUserHelper
         }
     }
 
+    // 将计算好的活跃用户集合写入缓存，65分过期
     private function cacheActiveUsers($active_users)
     {
         // 将数据放入缓存中
