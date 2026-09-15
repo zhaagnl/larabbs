@@ -12,10 +12,14 @@ use App\Models\Topic;
 use Illuminate\Support\Facades\Auth;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Support\Str;
+use App\Models\Traits\ActiveUserHelper;
+use App\Models\Traits\LastActivedAtHelper;
+
 
 class User extends Authenticatable implements MustVerifyEmail
 {
-    use Traits\ActiveUserHelper;
+    use ActiveUserHelper;
+    use LastActivedAtHelper;
     use HasApiTokens, HasFactory, MustVerifyEmailTrait;
     use HasRoles;
 
