@@ -42,16 +42,15 @@ return [
 
     // 表单验证规则
     'rules' => [
-        'site_name' => 'refquired|max:50',
-        'contact_email' => 'email',
+    'site_name'     => 'required|max:50',   // 修掉 refquired
+    'contact_email' => 'required|email',    // 加上 required，防止空值被过滤
+],
 
-    ],
-
-    'messages' => [
-        'site_name.required' => '请填写站点名称。',
-        'contact_email.email' => '请填写正确的联系人邮箱格式。',
-
-    ],
+'messages' => [
+    'site_name.required'     => '请填写站点名称。',
+    'contact_email.required' => '请填写联系人邮箱。',
+    'contact_email.email'    => '请填写正确的联系人邮箱格式。',
+],
 
     // 数据即将保存时触发的钩子，可以对用户提交的数据做修改
     'before_save' => function(&$data)
@@ -60,6 +59,8 @@ return [
         if(strpos($data['site_name'], 'Powered by LaraBBS') === false) {
             $data['site_name'] .= ' - Powered by LaraBBS';
         }
+
+
     },
 
     // 你可以自定义多个动作，每一个动作为设置页面底部的【其它操作】区块
